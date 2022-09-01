@@ -19,7 +19,7 @@ jobs:
       # builds the list of languages which are both present in the repo and supported by CodeQL
       # remove from the dictionary the languages that should not be considered (e.g .-[null, "go"])
       run: |
-        echo "::set-output name=languages::$(gh api repos/{owner}/{repo}/languages -q '[
+        echo "::set-output name=languages::$(gh api repos/${GITHUB_REPOSITORY}/languages -q '[
         {"C":"cpp", "C++":"cpp", "C#":"csharp", "Go":"go", "Java":"java", "JavaScript":"javascript", 
         "TypeScript":"javascript", "Python":"python", "Ruby":"ruby"}[keys[]]] | unique -[null]')"
     env:
