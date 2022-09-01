@@ -44,8 +44,8 @@ jobs:
       matrix:
         language: ${{ fromJSON(needs.detect-lang.outputs.codeql_languages) }}
         # eventually exclude languages
-        exclude:
-          - language: ruby
+        # exclude:
+        #  - language: ruby
         
     steps:
     - name: Checkout repository
