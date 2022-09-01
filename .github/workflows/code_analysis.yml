@@ -6,7 +6,6 @@ name: "CodeQL"
 #    uses: [REPO]/.github/workflows/code_analysis.yml@main
 
 on:
-  workflow_dispatch: #for testing
   workflow_call:     #for composition
 
 jobs:
