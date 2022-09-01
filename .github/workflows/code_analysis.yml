@@ -62,6 +62,8 @@ jobs:
     - name: Build
       # Custom build action folder
       uses: ./.github/actions/custom_build
+      with:
+        languages: ${{ matrix.language }}
 
     # perform the analysis
     - name: Perform CodeQL Analysis
