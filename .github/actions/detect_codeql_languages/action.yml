@@ -1,0 +1,19 @@
+name: "Detect CodeQL Languages"
+description: "Detect the repo languages supported by CodeQL using Linguist"
+  outputs:
+    linguist_languages: ${{ steps.linguist_languages.outputs.languages }}
+    codeql_languages:   ${{ steps.codeql_languages.outputs.languages }}
+runs:
+  using: "composite"
+    steps:
+    - id: linguist_languages
+      run: echo "::set-output name=languages::$(gh api repos/${GITHUB_REPOSITORY}/languages)"
+    - id: codeql_languages
+      # builds the list of languages which are both present in the repo and supported by CodeQL
+      # remove from the dictionary the languages that should not be considered (e.g .-[null, "go"])
+      run: |
+        echo "::set-output name=languages::$(gh api repos/${GITHUB_REPOSITORY}/languages -q '[
+        {"C":"cpp", "C++":"cpp", "C#":"csharp", "Go":"go", "Java":"java", "JavaScript":"javascript", 
+        "TypeScript":"javascript", "Python":"python", "Ruby":"ruby"}[keys[]]] | unique -[null]')"
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
