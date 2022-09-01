@@ -58,6 +58,7 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         languages: ${{ matrix.language }}
+        debug: true
     
     - name: Build
       # Custom build action folder
