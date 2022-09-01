@@ -1,0 +1,9 @@
+name: "CodeQL"
+
+on:
+  workflow_dispatch: #for testing
+  workflow_call:     #for composition
+
+jobs:
+  code_analysis:
+    uses: mbaluda-org/security_team/.github/workflows/code_analysis.yml@main
