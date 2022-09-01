@@ -1,0 +1,12 @@
+name: "Custom Build"
+description: "Builds The Project"
+inputs:
+  languages:
+    description: "Language"
+    required: true
+    type: string
+runs:
+  using: "composite"
+  steps:
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
