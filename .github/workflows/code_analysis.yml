@@ -78,7 +78,7 @@ jobs:
 
     - name: Build default
       if: steps.custom_build_action.outputs.files_exists == 'false'
-      uses: mbaluda-org/security_team/actions/custom_build@main
+      uses: mbaluda-org/security_team/custom_build@main
       with:
         languages: ${{ matrix.language }}
 
