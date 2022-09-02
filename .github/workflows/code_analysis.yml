@@ -1,4 +1,4 @@
-name: "CodeQL"
+name: "CodeQL Reusable Workflow"
 
 # this workflow can be stored in a centralized repo and called externally
 # jobs:
