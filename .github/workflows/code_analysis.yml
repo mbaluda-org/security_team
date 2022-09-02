@@ -77,7 +77,7 @@ jobs:
         files: "./.github/actions/custom_build/action.yml"
 
     - name: Delombok 
-      if: ${{ matrix.language }} == 'java'
+      if: matrix.language == 'java'
       uses: mbaluda-org/delombok-action@main 
       
     - name: Build default
