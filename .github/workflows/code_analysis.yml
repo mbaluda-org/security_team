@@ -77,6 +77,7 @@ jobs:
         files: "./.github/actions/custom_build/action.yml"
 
     - name: Delombok 
+      if: ${{ matrix.language }} == 'java'
       uses: advanced-security/delombok-action@main 
       
     - name: Build default
