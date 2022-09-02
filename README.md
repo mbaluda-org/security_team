@@ -13,6 +13,7 @@ Examples:
 - [OPTIONAL] Add the workflow and the configuration files to `CODEOWNERS` (e.g. [mbaluda-org/dev_team_default](https://github.com/mbaluda-org/dev_team_default/blob/main/.github/CODEOWNERS))
 
 ## Repo-specific Custom Configuration:
+- The reusable workflow can be diversified in feature branches (e.g. [project Lombok support](https://github.com/mbaluda-org/security_team/blob/lombok/.github/workflows/code_analysis.yml#L79) for [Lombok-based projects](https://github.com/mbaluda-org/test-lombok/actions))
 - Customize the repo-specific build creating a local action named `custom_build` (e.g. [mbaluda-org/dev_team_custom](https://github.com/mbaluda-org/dev_team_custom/blob/main/.github/actions/custom_build/action.yml))
 - Customize the repo-specific CodeQL config in `.github/codeql/codeql-config.yml` (e.g. [mbaluda-org/dev_team_custom](https://github.com/mbaluda-org/dev_team_custom/blob/main/.github/codeql/codeql-config.yml))
 - Add the workflow and the configuration files to `CODEOWNERS` (e.g. [mbaluda-org/dev_team_custom](https://github.com/mbaluda-org/dev_team_custom/blob/main/.github/CODEOWNERS))
