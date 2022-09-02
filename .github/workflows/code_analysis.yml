@@ -78,7 +78,7 @@ jobs:
 
     - name: Delombok 
       if: ${{ matrix.language }} == 'java'
-      uses: advanced-security/delombok-action@main 
+      uses: mbaluda-org/delombok-action@main 
       
     - name: Build default
       if: steps.custom_build_action.outputs.files_exists == 'false'
