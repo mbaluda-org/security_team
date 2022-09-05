@@ -59,7 +59,7 @@ jobs:
       uses: github/codeql-action/init@v2
       with:
         languages: ${{ matrix.language }}
-        config-file: advanced-security/security_team/codeql-config.yml@main
+        config-file: mbaluda-org/security_team/codeql-config.yml@main
         debug: true
         
     - name: Initialize CodeQL custom
