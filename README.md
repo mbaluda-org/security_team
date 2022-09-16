@@ -1,4 +1,4 @@
-# Centralized reusable Code Scanning workflow
+# Centralized Code Scanning workflow
 Code Scanning workflows are usually owned and managed by developer teams, but larger organizations often prefer a model where a central security team is in control of the configuration of the analysis
 
 This repo contains:
