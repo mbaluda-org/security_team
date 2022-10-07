@@ -26,3 +26,7 @@ Examples:
   - [OWASP WebGoat without Lombok support](https://github.com/mbaluda-org/WebGoat/security/code-scanning)
   - [OWASP WebGoat with Lombok support](https://github.com/mbaluda-org/WebGoat_delombok/security/code-scanning)
 - Add the workflow and the configuration files to `CODEOWNERS` (e.g. [mbaluda-org/WebGoat_custom_build](https://github.com/mbaluda-org/WebGoat_custom_build/blob/main/.github/CODEOWNERS))
+
+## Diagram
+
+![Centralize CodeQL Workflow](https://user-images.githubusercontent.com/5237080/194565178-34a64e08-062c-474c-9d47-3348bbaf7fd0.png)
