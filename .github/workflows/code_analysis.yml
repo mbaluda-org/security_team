@@ -50,7 +50,7 @@ jobs:
         
     - name: Check CodeQL config existence
       id: custom_codeql_config
-      uses: andstor/file-existence-action@v1
+      uses: andstor/file-existence-action@v2
       with:
         files: "./.github/codeql/codeql-config.yml"
         
@@ -72,7 +72,7 @@ jobs:
 
     - name: Check local build action existence
       id: custom_build_action
-      uses: andstor/file-existence-action@v1
+      uses: andstor/file-existence-action@v2
       with:
         files: "./.github/actions/custom_build/action.yml"
 
