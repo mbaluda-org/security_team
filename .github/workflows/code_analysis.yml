@@ -24,9 +24,9 @@ jobs:
     - id: codeql_languages
       # builds the list of languages which are both present in the repo and supported by CodeQL
       run: |
-        echo "::set-output name=languages::$(gh api repos/${GITHUB_REPOSITORY}/languages -q '[
+        echo "name=languages::$(gh api repos/${GITHUB_REPOSITORY}/languages -q '[
         {"C":"cpp", "C++":"cpp", "C#":"csharp", "Go":"go", "Java":"java", "Kotlin":"java", "JavaScript":"javascript", 
-        "TypeScript":"javascript", "Python":"python", "Ruby":"ruby"}[keys[]]] | unique -[null] -${{inputs.exclude_codeql_languages}}')"
+        "TypeScript":"javascript", "Python":"python", "Ruby":"ruby"}[keys[]]] | unique -[null] -${{inputs.exclude_codeql_languages}}')"  >> $GITHUB_OUTPUT
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
