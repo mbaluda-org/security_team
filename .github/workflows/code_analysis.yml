@@ -21,7 +21,7 @@ jobs:
       run: |
         echo "::set-output name=languages::$(gh api repos/${GITHUB_REPOSITORY}/languages -q '[
         {"C":"cpp", "C++":"cpp", "C#":"csharp", "Go":"go", "Java":"java", "JavaScript":"javascript", 
-        "TypeScript":"javascript", "Python":"python", "Ruby":"ruby"}[keys[]]] | unique -[null]')"
+        "TypeScript":"javascript", "Python":"python", "Ruby":"ruby"}[keys[]]] | unique -[null] -${{inputs.exclude_codeql_languages}}')"
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
