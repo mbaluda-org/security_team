@@ -6,7 +6,13 @@ name: "CodeQL Reusable Workflow"
 #    uses: [REPO]/.github/workflows/code_analysis.yml@main
 
 on:
-  workflow_call:     #for composition
+  workflow_call:
+    inputs:
+      exclude_codeql_languages:
+        description: 'Languages that should not be analyzed'
+        default: "[]"
+        required: false
+        type: string
 
 jobs:
   # separate into an action
