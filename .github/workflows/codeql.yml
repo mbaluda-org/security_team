@@ -12,3 +12,6 @@ on:
 jobs:
   code_analysis:
     uses: mbaluda-org/security_team/.github/workflows/code_analysis.yml@main
+    # Exclude undesired languages
+    # with:
+    #   exclude_codeql_languages: '["ruby"]'
