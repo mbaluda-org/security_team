@@ -6,22 +6,27 @@ name: "CodeQL Reusable Workflow"
 #    uses: [REPO]/.github/workflows/code_analysis.yml@main
 
 on:
-  workflow_call:     #for composition
+  workflow_call:
+    inputs:
+      exclude_codeql_languages:
+        description: 'Languages that should not be analyzed'
+        default: "[]"
+        required: false
+        type: string
 
 jobs:
   # separate into an action
   detect-lang:
     runs-on: ubuntu-latest
     outputs:
-      codeql_languages:   ${{ steps.codeql_languages.outputs.languages }}
+      codeql_languages: ${{ steps.codeql_languages.outputs.languages }}
     steps:
     - id: codeql_languages
       # builds the list of languages which are both present in the repo and supported by CodeQL
-      # remove from the dictionary the languages that should not be considered (e.g .-[null, "go"])
       run: |
         echo "::set-output name=languages::$(gh api repos/${GITHUB_REPOSITORY}/languages -q '[
         {"C":"cpp", "C++":"cpp", "C#":"csharp", "Go":"go", "Java":"java", "Kotlin":"java", "JavaScript":"javascript", 
-        "TypeScript":"javascript", "Python":"python", "Ruby":"ruby"}[keys[]]] | unique -[null]')"
+        "TypeScript":"javascript", "Python":"python", "Ruby":"ruby"}[keys[]]] | unique -[null] -${{fromJson(inputs.exclude_codeql_languages)}}')"
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
