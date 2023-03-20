@@ -25,8 +25,8 @@ jobs:
       # builds the list of languages which are both present in the repo and supported by CodeQL
       run: |
         echo "languages=$(gh api repos/${GITHUB_REPOSITORY}/languages -q '[
-        {"C":"cpp", "C++":"cpp", "C#":"csharp", "Go":"go", "Java":"java", "Kotlin":"java", "JavaScript":"javascript", 
-        "TypeScript":"javascript", "Python":"python", "Ruby":"ruby"}[keys[]]] | unique -[null] -${{inputs.exclude_codeql_languages}}')" >> $GITHUB_OUTPUT
+        {"C":"cpp", "C++":"cpp", "C#":"csharp", "Go":"go", "Java":"java", "Kotlin":"java", "JavaScript":"javascript", "TypeScript":"javascript", "Python":"python", "Ruby":"ruby"}
+        [keys[]]] | unique -[null] -${{inputs.exclude_codeql_languages}}')" >> $GITHUB_OUTPUT
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
@@ -81,6 +81,10 @@ jobs:
       with:
         files: "./.github/actions/custom_build/action.yml"
 
+    - name: Delombok 
+      if: matrix.language == 'java'
+      uses: ghas-trials/delombok@main 
+      
     - name: Build default
       if: steps.custom_build_action.outputs.files_exists == 'false'
       uses: github/codeql-action/autobuild@v2
