@@ -15,3 +15,6 @@ jobs:
     # Exclude undesired languages
     # with:
     #   exclude_codeql_languages: '["ruby"]'
+    # Configure custom Java version
+    #   java_version: '17'
+    #   java_distribution: 'temurin'
