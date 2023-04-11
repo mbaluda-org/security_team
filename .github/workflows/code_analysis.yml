@@ -88,7 +88,7 @@ jobs:
         files: "./.github/actions/custom_build/action.yml"
 
     - uses: actions/setup-java@v3
-      if: steps.custom_build_action.outputs.files_exists == 'false' && ${{matrix.language}} == 'java'
+      if: steps.custom_build_action.outputs.files_exists == 'false' && matrix.language == 'java'
       with:
         distribution: ${{java_distribution}}
         java-version: ${{java_version}}
