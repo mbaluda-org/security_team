@@ -12,6 +12,9 @@ on:
 jobs:
   code_analysis:
     uses: mbaluda-org/security_team/.github/workflows/code_analysis.yml@main
-    # Exclude undesired languages
     # with:
+    # Exclude undesired languages
     #   exclude_codeql_languages: '["ruby"]'
+    # Configure custom Java version
+    #   java_version: '17'
+    #   java_distribution: 'temurin'
