@@ -33,6 +33,7 @@ jobs:
       uses: actions/checkout@v3
 
     - id: codeql_languages
+      name: Build language matrix
       # builds the list of languages which are both present in the repo and supported by CodeQL
       run: |
         ql_lang=()
@@ -43,7 +44,7 @@ jobs:
         [ -n $(find . \( -iname "*.js" -o -iname "*.jsx" -o -iname "*.mjs" -o -iname "*.es" -o -iname "*.es6" -o -iname "*.htm" -o -iname "*.html" -o -iname "*.xhtm" -o -iname "*.xhtml" -o -iname "*.vue" -o -iname "*.hbs" -o -iname "*.ejs" -o -iname "*.njk" -o -iname "*.json" -o -iname "*.yaml" -o -iname "*.yml" -o -iname "*.raml" -o -iname "*.xml" -o -iname "*.ts" -o -iname "*.tsx" -o -iname "*.mts" -o -iname "*.cts" \) -print -quit) ] && ql_lang+=("javascript")
         [ -n $(find . -iname "*.py" -print -quit) ] && ql_lang+=("python")
         [ -n $(find . \( -iname "*.rb" -o -iname "*.erb" -o -iname "*.gemspec" -o -iname "Gemfile" \) -print -quit) ] && ql_lang+=("ruby")
-        echo "languages=[$(echo ${ql_lang[@]} | sed 's/ /, /g')]" >> $GITHUB_OUTPUT
+        echo "languages=[\"$(echo ${ql_lang[@]} | sed 's/ /\", \"/g')\"]" >> $GITHUB_OUTPUT
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
