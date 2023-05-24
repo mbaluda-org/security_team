@@ -50,8 +50,6 @@ jobs:
         
   codeql-analysis:
     needs: [detect-lang]
-    # skip the analysis when the list of languages is empty
-    if: needs.detect-lang.outputs.codeql_languages != '[]'
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -62,6 +60,8 @@ jobs:
       fail-fast: false
       matrix:
         language: ${{ fromJSON(needs.detect-lang.outputs.codeql_languages) }}
+        exclude:
+        - language: ${{inputs.exclude_codeql_languages}}
         
     steps:
     - name: Checkout repository
