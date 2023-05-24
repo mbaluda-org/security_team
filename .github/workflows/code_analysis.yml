@@ -61,7 +61,7 @@ jobs:
       matrix:
         language: ${{ fromJSON(needs.detect-lang.outputs.codeql_languages) }}
         exclude:
-        - language: ${{inputs.exclude_codeql_languages}}
+        - language: ${{ fromJSON(inputs.exclude_codeql_languages) }}
         
     steps:
     - name: Checkout repository
