@@ -37,19 +37,21 @@ jobs:
       # builds the list of languages which are both present in the repo and supported by CodeQL
       run: |
         ql_lang=()
-        [[ -n $(find . \( -iname "*.cpp" -o -iname "*.c++" -o -iname "*.cxx" -o -iname "*.hpp" -o -iname "*.hh" -o -iname "*.h++" -o -iname "*.hxx" -o -iname "*.c" -o -iname "*.cc" -o -iname "*.h" \) -print -quit) ]] && ql_lang+=("cpp")
-        [[ -n $(find . \( -iname "*.sln" -o -iname "*.csproj" -o -iname "*.cs" -o -iname "*.cshtml" -o -iname "*.xaml" \) -print -quit) ]] && ql_lang+=("csharp")
-        [[ -n $(find . -iname "*.go" -print -quit) ]] && ql_lang+=("go")
+        [[ ${{ fromJSON(inputs.exclude_codeql_languages) }} =~ "cpp" ]] && [[ -n $(find . \( -iname "*.cpp" -o -iname "*.c++" -o -iname "*.cxx" -o -iname "*.hpp" -o -iname "*.hh" -o -iname "*.h++" -o -iname "*.hxx" -o -iname "*.c" -o -iname "*.cc" -o -iname "*.h" \) -print -quit) ]] && ql_lang+=("cpp")
+        [[ ${{ fromJSON(inputs.exclude_codeql_languages) }} =~ "csharp" ]] && [[ -n $(find . \( -iname "*.sln" -o -iname "*.csproj" -o -iname "*.cs" -o -iname "*.cshtml" -o -iname "*.xaml" \) -print -quit) ]] && ql_lang+=("csharp")
+        [[ ${{ fromJSON(inputs.exclude_codeql_languages) }} =~ "go" ]] && [[ -n $(find . -iname "*.go" -print -quit) ]] && ql_lang+=("go")
         [[ ${{ fromJSON(inputs.exclude_codeql_languages) }} =~ "java" ]] && [[ -n $(find . \( -iname "*.java" -o -iname "*.kt" \) -print -quit) ]] && ql_lang+=("java")
         [[ ${{ fromJSON(inputs.exclude_codeql_languages) }} =~ "javascript" ]] && [[ -n $(find . \( -iname "*.js" -o -iname "*.jsx" -o -iname "*.mjs" -o -iname "*.es" -o -iname "*.es6" -o -iname "*.htm" -o -iname "*.html" -o -iname "*.xhtm" -o -iname "*.xhtml" -o -iname "*.vue" -o -iname "*.hbs" -o -iname "*.ejs" -o -iname "*.njk" -o -iname "*.json" -o -iname "*.yaml" -o -iname "*.yml" -o -iname "*.raml" -o -iname "*.xml" -o -iname "*.ts" -o -iname "*.tsx" -o -iname "*.mts" -o -iname "*.cts" \) -print -quit) ]] && ql_lang+=("javascript")
-        [[ -n $(find . -iname "*.py" -print -quit) ]] && ql_lang+=("python")
-        [[ -n $(find . \( -iname "*.rb" -o -iname "*.erb" -o -iname "*.gemspec" -o -iname "Gemfile" \) -print -quit) ]] && ql_lang+=("ruby")
+        [[ ${{ fromJSON(inputs.exclude_codeql_languages) }} =~ "python" ]] && [[ -n $(find . -iname "*.py" -print -quit) ]] && ql_lang+=("python")
+        [[ ${{ fromJSON(inputs.exclude_codeql_languages) }} =~ "ruby" ]] && [[ -n $(find . \( -iname "*.rb" -o -iname "*.erb" -o -iname "*.gemspec" -o -iname "Gemfile" \) -print -quit) ]] && ql_lang+=("ruby")
         echo "languages=[\"$(echo ${ql_lang[@]} | sed 's/ /\", \"/g')\"]" >> $GITHUB_OUTPUT
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
   codeql-analysis:
     needs: [detect-lang]
+    # skip the analysis when the list of languages is empty
+    if: needs.detect-lang.outputs.codeql_languages != '[]'
     runs-on: ubuntu-latest
     permissions:
       actions: read
