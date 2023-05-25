@@ -80,18 +80,18 @@ jobs:
         languages: ${{ matrix.language }}
         config-file: ./.github/codeql/codeql-config.yml
         debug: true    
+    
+    - uses: actions/setup-java@v3
+      if: steps.custom_build_action.outputs.files_exists == 'false' && matrix.language == 'java'
+      with:
+        distribution: ${{inputs.java_distribution}}
+        java-version: ${{inputs.java_version}}
 
     - name: Check local build action existence
       id: custom_build_action
       uses: andstor/file-existence-action@v2
       with:
         files: "./.github/actions/custom_build/action.yml"
-
-    - uses: actions/setup-java@v3
-      if: steps.custom_build_action.outputs.files_exists == 'false' && matrix.language == 'java'
-      with:
-        distribution: ${{inputs.java_distribution}}
-        java-version: ${{inputs.java_version}}
 
     - name: Build default
       if: steps.custom_build_action.outputs.files_exists == 'false'
