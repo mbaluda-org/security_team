@@ -2,9 +2,9 @@
 Code Scanning workflows are usually owned and managed by developer teams, but larger organizations often prefer a model where a central security team is in control of the configuration of the analysis
 
 This repo contains:
-1. a centralized [reusable workflow](https://github.com/mbaluda-org/security_team/blob/main/.github/workflows/code_analysis.yml) owned by the security team
+1. a centralized [reusable workflow](https://github.com/mbaluda-org/security_team/blob/main/.github/workflows/code_analysis.yml#L90-L104) owned by the security team
 2. a centralized [CodeQL configuration file](https://github.com/mbaluda-org/security_team/blob/main/codeql-config.yml)
-3. a standardized [CodeQL workflow](https://github.com/mbaluda-org/security_team/blob/main/.github/workflows/codeql.yml) that is pushed to all the interested repos
+3. a standardized [CodeQL workflow](https://github.com/mbaluda-org/security_team/blob/main/.github/workflows/codeql.yml) that is pushed to all the interested repos and allows for a few parameter (e.g. language exclusion)
 
 Repository-specific customiziations are possible adding a local build action in `.github/actions/custom_build/action.yml` and CodeQL configuration in `.github/codeql/codeql-config.yml`.
 
