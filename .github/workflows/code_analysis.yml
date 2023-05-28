@@ -33,9 +33,6 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
-          const exclude_codeql_languages = github.getInput('exclude_codeql_languages', { required: false });
-          github.info(`exclude_codeql_languages: ${exclude_codeql_languages}`);
-          
           const { data: tree } = await new github.rest.git.getTree({
             context.repo.owner, context.repo.repo,
             tree_sha: process.env.GITHUB_SHA ? process.env.GITHUB_SHA : "HEAD",
@@ -43,7 +40,7 @@ jobs:
           });
           
           const hasCppFile = tree.tree.some((item) => 
-            item.path?.match(/\.(cpp|c\+\+|cxx|hpp|hh|h\+\+\|hxx|c|cc|h)$/));
+            item.path?.match(/\.(cpp|c\+\+|cxx|c|cc)$/));
           const hasCsharpFile = tree.tree.some((item) => 
             item.path?.match(/\.(sln|csproj|cs|cshtml|xaml)$/));                   
           const hasGoFile = tree.tree.some((item) => 
@@ -66,7 +63,7 @@ jobs:
           if (hasRubyFile) languages.push('ruby');
           if (hasJavascriptFile) languages.push('javascript');
           
-          return languages.filter(n => !exclude_codeql_languages.includes(n))
+          return languages
         
   codeql-analysis:
     needs: [detect-lang]
