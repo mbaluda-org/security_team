@@ -41,7 +41,7 @@ jobs:
           });
           
           const hasCppFile = tree.tree.some((item) => 
-            item.path?.match(/\.(cpp|c\+\+|cxx|hpp|hh|h\+\+\|hxx|c|cc|h)$/));
+            item.path?.match(/\.(cpp|c\+\+|cxx|c|cc)$/));
           const hasCsharpFile = tree.tree.some((item) => 
             item.path?.match(/\.(sln|csproj|cs|cshtml|xaml)$/));                   
           const hasGoFile = tree.tree.some((item) => 
