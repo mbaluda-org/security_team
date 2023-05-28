@@ -35,6 +35,7 @@ jobs:
         script: |
           const {repo, owner} = context.repo;
           const exclude_codeql_languages = core.getInput('exclude_codeql_languages', { required: false });
+          core.info(`exclude_codeql_languages: ${exclude_codeql_languages}`);
           const { data: tree } = await new github.rest.git.getTree({
             owner, repo,
             tree_sha: process.env.GITHUB_SHA ? process.env.GITHUB_SHA : "HEAD",
@@ -64,7 +65,7 @@ jobs:
           if (hasPythonFile) languages.push('python');
           if (hasRubyFile) languages.push('ruby');
           if (hasJavascriptFile) languages.push('javascript');
-          core.setOutput('languages', languages.filter(n => !exclude_codeql_languages.includes(n)))
+          core.setOutput('languages', languages.filter(n => !JSON.parse(exclude_codeql_languages).includes(n)))
         
   codeql-analysis:
     needs: [detect-lang]
