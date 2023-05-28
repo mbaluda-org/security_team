@@ -30,13 +30,40 @@ jobs:
       codeql_languages: ${{ steps.codeql_languages.outputs.languages }}
     steps:
     - id: codeql_languages
-      # builds the list of languages which are both present in the repo and supported by CodeQL
-      run: |
-        echo "languages=$(gh api repos/${GITHUB_REPOSITORY}/languages -q '[
-        {"C":"cpp", "C++":"cpp", "C#":"csharp", "Go":"go", "Java":"java", "Kotlin":"java", "JavaScript":"javascript", "TypeScript":"javascript", "Python":"python", "Ruby":"ruby"}
-        [keys[]]] | unique -[null] -${{inputs.exclude_codeql_languages}}')" >> $GITHUB_OUTPUT
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const {repo, owner} = context.repo;
+          const { data: tree } = await new github.rest.git.getTree({
+            owner, repo,
+            tree_sha: process.env.GITHUB_SHA ? process.env.GITHUB_SHA : "HEAD",
+            recursive: "true",
+          });
+          
+          const hasCppFile = tree.tree.some((item) => 
+            item.path?.match(/\.(cpp|c\+\+|cxx|hpp|hh|h\+\+\|hxx|c|cc|h)$/));
+          const hasCsharpFile = tree.tree.some((item) => 
+            item.path?.match(/\.(sln|csproj|cs|cshtml|xaml)$/));                   
+          const hasGoFile = tree.tree.some((item) => 
+            item.path?.match(/\.go$/));
+          const hasJavaFile = tree.tree.some((item) => 
+            item.path?.match(/\.(java|kt)$/));
+          const hasPythonFile = tree.tree.some((item) => 
+            item.path?.match(/\.py$/));
+          const hasRubyFile = tree.tree.some((item) => 
+            item.path?.match(/(^Gemfile|\.(rb|erb|gemspec))$/));
+          const hasJavascriptFile = tree.tree.some((item) => 
+            item.path?.match(/\.(js|jsx|mjs|es|es6|htm|html|xhtm|xhtms|vue|hbs|ejs|njk|json|yaml|yml|raml|xml|ts|tsx|mts|cts)$/));
+          
+          let languages = [];
+          if (hasCPPFile) languages.push('cpp');
+          if (hasCsharpFile) languages.push('csharp');
+          if (hasGoFile) languages.push('go');
+          if (hasJavaFile) languages.push('java');
+          if (hasPythonFile) languages.push('python');
+          if (hasRubyFile) languages.push('ruby');
+          if (hasJavascriptFile) languages.push('javascript');
+          core.setOutput('languages', languages)
         
   codeql-analysis:
     needs: [detect-lang]
