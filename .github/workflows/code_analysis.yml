@@ -56,7 +56,7 @@ jobs:
             item.path?.match(/\.(js|jsx|mjs|es|es6|htm|html|xhtm|xhtms|vue|hbs|ejs|njk|json|yaml|yml|raml|xml|ts|tsx|mts|cts)$/));
           
           let languages = [];
-          if (hasCPPFile) languages.push('cpp');
+          if (hasCppFile) languages.push('cpp');
           if (hasCsharpFile) languages.push('csharp');
           if (hasGoFile) languages.push('go');
           if (hasJavaFile) languages.push('java');
