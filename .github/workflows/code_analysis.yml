@@ -33,14 +33,15 @@ jobs:
       uses: actions/github-script@v6
       with:
         script: |
+          const {repo, owner} = context.repo;
           const { data: tree } = await new github.rest.git.getTree({
-            context.repo.owner, context.repo.repo,
+            owner, repo,
             tree_sha: process.env.GITHUB_SHA ? process.env.GITHUB_SHA : "HEAD",
             recursive: "true",
           });
           
           const hasCppFile = tree.tree.some((item) => 
-            item.path?.match(/\.(cpp|c\+\+|cxx|c|cc)$/));
+            item.path?.match(/\.(cpp|c\+\+|cxx|hpp|hh|h\+\+\|hxx|c|cc|h)$/));
           const hasCsharpFile = tree.tree.some((item) => 
             item.path?.match(/\.(sln|csproj|cs|cshtml|xaml)$/));                   
           const hasGoFile = tree.tree.some((item) => 
@@ -62,8 +63,7 @@ jobs:
           if (hasPythonFile) languages.push('python');
           if (hasRubyFile) languages.push('ruby');
           if (hasJavascriptFile) languages.push('javascript');
-          
-          return languages
+          core.setOutput('languages', languages)
         
   codeql-analysis:
     needs: [detect-lang]
@@ -133,3 +133,4 @@ jobs:
     # perform the analysis
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
+      
