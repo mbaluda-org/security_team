@@ -10,7 +10,7 @@ on:
     inputs:
       exclude_codeql_languages:
         description: 'Languages that should not be analyzed'
-        default: "[]"
+        default: '[]'
         required: false
         type: string  
 
@@ -23,6 +23,8 @@ jobs:
     steps:
     - id: codeql_languages
       uses: mbaluda/codeql-languages-action@main
+      with:
+        exclude_codeql_languages: ${{inputs.exclude_codeql_languages}}
         
   codeql-analysis:
     needs: [detect-lang]
