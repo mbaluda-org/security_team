@@ -32,28 +32,34 @@ jobs:
             recursive: "true",
           });
           
+          let languages = [];
+          
           const hasCppFile = tree.tree.some((item) => 
             item.path?.match(/\.(cpp|c\+\+|cxx|c|cc)$/));
+          if (hasCppFile) languages.push('cpp');
+          
           const hasCsharpFile = tree.tree.some((item) => 
-            item.path?.match(/\.(cs|cshtml|xaml)$/));                   
+            item.path?.match(/\.(cs|cshtml|xaml)$/));    
+          if (hasCsharpFile) languages.push('csharp');               
+          
           const hasGoFile = tree.tree.some((item) => 
             item.path?.match(/\.go$/));
+          if (hasGoFile) languages.push('go');
+          
           const hasJavaFile = tree.tree.some((item) => 
             item.path?.match(/\.(java|kt)$/));
+          if (hasJavaFile) languages.push('java');
+          
           const hasPythonFile = tree.tree.some((item) => 
             item.path?.match(/\.py$/));
+          if (hasPythonFile) languages.push('python');
+          
           const hasRubyFile = tree.tree.some((item) => 
             item.path?.match(/\.(rb|erb)$/));
+          if (hasRubyFile) languages.push('ruby');
+          
           const hasJavascriptFile = tree.tree.some((item) => 
             item.path?.match(/\.(js|jsx|mjs|es|es6|htm|html|xhtm|xhtms|vue|hbs|ejs|njk|ts|tsx|mts|cts)$/));
-          
-          let languages = [];
-          if (hasCppFile) languages.push('cpp');
-          if (hasCsharpFile) languages.push('csharp');
-          if (hasGoFile) languages.push('go');
-          if (hasJavaFile) languages.push('java');
-          if (hasPythonFile) languages.push('python');
-          if (hasRubyFile) languages.push('ruby');
           if (hasJavascriptFile) languages.push('javascript');
           
           // remove excluded languages
@@ -101,6 +107,7 @@ jobs:
         languages: ${{ matrix.language }}
         config-file: mbaluda-org/security_team/codeql-config.yml@main
     
+    # TODO: allow for configuration-specific actions
     - name: Check local build action existence
       id: custom_build_action
       uses: andstor/file-existence-action@v2
@@ -120,4 +127,3 @@ jobs:
     # perform the analysis
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
-      
