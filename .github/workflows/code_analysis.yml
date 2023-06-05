@@ -63,7 +63,7 @@ jobs:
           if (hasJavascriptFile) languages.push('javascript');
           
           // remove excluded languages
-          languages = languages.filter(x => ! ${{inputs.exclude_codeql_languages}}.includes(x))
+          languages = languages.filter(x => ! ${{inputs.exclude_codeql_languages}}.includes(x));
           core.setOutput('languages', languages)
         
   codeql-analysis:
