@@ -43,7 +43,7 @@ jobs:
           const hasPythonFile = tree.tree.some((item) => 
             item.path?.match(/\.py$/));
           const hasRubyFile = tree.tree.some((item) => 
-            item.path?.match(/(^Gemfile|\.(rb|erb|gemspec))$/));
+            item.path?.match(/\.(rb|erb)$/));
           const hasJavascriptFile = tree.tree.some((item) => 
             item.path?.match(/\.(js|jsx|mjs|es|es6|htm|html|xhtm|xhtms|vue|hbs|ejs|njk|ts|tsx|mts|cts)$/));
           
@@ -58,7 +58,8 @@ jobs:
           
           // remove excluded languages
           console.log(languages)
-          languages.filter(x => ! ${{inputs.exclude_codeql_languages}}.includes(x))
+          console.log(${{inputs.exclude_codeql_languages}})
+          languages = languages.filter(x => ! ${{inputs.exclude_codeql_languages}}.includes(x))
           console.log(languages)
           core.setOutput('languages', languages)
         
