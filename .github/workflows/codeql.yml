@@ -15,5 +15,3 @@ jobs:
     # with:
     # Exclude undesired languages
     #   exclude_codeql_languages: '["ruby"]'
-    # Configure custom Java version
-    #   java_version: '17'
