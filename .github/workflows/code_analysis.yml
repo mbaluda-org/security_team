@@ -15,7 +15,6 @@ on:
         type: string  
 
 jobs:
-  # separate into an action
   detect-lang:
     runs-on: ubuntu-latest
     outputs:
@@ -67,7 +66,6 @@ jobs:
         languages: ${{ matrix.language }}
         config-file: mbaluda-org/security_team/codeql-config.yml@main
     
-    # TODO: allow for configuration-specific actions
     - name: Check local build action existence
       id: custom_build_action
       uses: andstor/file-existence-action@v2
