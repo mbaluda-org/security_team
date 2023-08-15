@@ -96,12 +96,28 @@ jobs:
     - name: Build default
       if: steps.custom_build_action.outputs.files_exists == 'false'
       uses: github/codeql-action/autobuild@v2
+      id: autobuild
+      continue-on-error: true
+      
+    - uses: mainmatter/continue-on-error-comment@v1
+      if: steps.custom_build_action.outputs.files_exists == 'false'
+      with:
+        outcome: ${{ steps.autobuild.outcome }}
+        test-id: Error code ${{ matrix.code }}
 
     - name: Build custom
       if: steps.custom_build_action.outputs.files_exists == 'true'
       uses: ./.github/actions/custom_build
+      id: custombuild
+      continue-on-error: true
       with:
         languages: ${{ matrix.language }}
+
+    - uses: mainmatter/continue-on-error-comment@v1
+      if: steps.custom_build_action.outputs.files_exists == 'true'
+      with:
+        outcome: ${{ steps.autobuild.outcome }}
+        test-id: Error code ${{ matrix.code }}    
 
     # perform the analysis
     - name: Perform CodeQL Analysis
