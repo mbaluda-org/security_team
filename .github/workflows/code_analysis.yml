@@ -13,6 +13,8 @@ on:
         default: '[]'
         required: false
         type: string  
+  
+
 
 jobs:
   detect-lang:
@@ -26,6 +28,7 @@ jobs:
         exclude_codeql_languages: ${{inputs.exclude_codeql_languages}}
         
   codeql-analysis:
+    continue-on-error: true
     needs: [detect-lang]
     # skip the analysis when the list of languages is empty
     if: needs.detect-lang.outputs.codeql_languages != '[]'
@@ -82,20 +85,18 @@ jobs:
       if: steps.custom_build_action.outputs.files_exists == 'false'
       uses: github/codeql-action/autobuild@v2
       id: autobuild
-      continue-on-error: true
       
     - uses: mainmatter/continue-on-error-comment@v1
       if: steps.custom_build_action.outputs.files_exists == 'false'
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         outcome: ${{ steps.autobuild.outcome }}
-        test-id: Error code ${{ matrix.code }}
+        test-id: Codeql autobuild failed
 
     - name: Build custom
       if: steps.custom_build_action.outputs.files_exists == 'true'
       uses: ./.github/actions/custom_build
       id: custombuild
-      continue-on-error: true
       with:
         languages: ${{ matrix.language }}
 
@@ -104,7 +105,7 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         outcome: ${{ steps.custombuild.outcome }}
-        test-id: Error code ${{ matrix.code }}    
+        test-id: Codeql custom build failed
 
     # perform the analysis
     - name: Perform CodeQL Analysis
