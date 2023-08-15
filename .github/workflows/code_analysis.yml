@@ -10,33 +10,20 @@ on:
     inputs:
       exclude_codeql_languages:
         description: 'Languages that should not be analyzed'
-        default: "[]"
+        default: '[]'
         required: false
-        type: string
-      java_version:
-        default: '17'
-        required: false
-        type: string
-      java_distribution:
-        default: 'temurin'
-        required: false
-        type: string        
+        type: string  
 
 jobs:
-  # separate into an action
   detect-lang:
     runs-on: ubuntu-latest
     outputs:
       codeql_languages: ${{ steps.codeql_languages.outputs.languages }}
     steps:
     - id: codeql_languages
-      # builds the list of languages which are both present in the repo and supported by CodeQL
-      run: |
-        echo "languages=$(gh api repos/${GITHUB_REPOSITORY}/languages -q '[
-        {"C":"cpp", "C++":"cpp", "C#":"csharp", "Go":"go", "Java":"java", "Kotlin":"java", "JavaScript":"javascript", "TypeScript":"javascript", "Python":"python", "Ruby":"ruby"}
-        [keys[]]] | unique -[null] -${{inputs.exclude_codeql_languages}}')" >> $GITHUB_OUTPUT
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      uses: mbaluda/codeql-languages-action@main
+      with:
+        exclude_codeql_languages: ${{inputs.exclude_codeql_languages}}
         
   codeql-analysis:
     needs: [detect-lang]
@@ -65,33 +52,31 @@ jobs:
       with:
         files: "./.github/codeql/codeql-config.yml"
         
-    - name: Initialize CodeQL default
-      if: steps.custom_codeql_config.outputs.files_exists == 'false'
-      uses: github/codeql-action/init@v2
-      with:
-        languages: ${{ matrix.language }}
-        config-file: mbaluda-org/security_team/codeql-config.yml@main
-        #debug: true
-        
     - name: Initialize CodeQL custom
       if: steps.custom_codeql_config.outputs.files_exists == 'true'
       uses: github/codeql-action/init@v2
       with:
         languages: ${{ matrix.language }}
         config-file: ./.github/codeql/codeql-config.yml
-        debug: true    
-    
-    - uses: actions/setup-java@v3
-      if: steps.custom_build_action.outputs.files_exists == 'false' && matrix.language == 'java'
+        
+    - name: Initialize CodeQL default
+      if: steps.custom_codeql_config.outputs.files_exists == 'false'
+      uses: github/codeql-action/init@v2
       with:
-        distribution: ${{inputs.java_distribution}}
-        java-version: ${{inputs.java_version}}
-
+        languages: ${{ matrix.language }}
+        config-file: mbaluda-org/security_team/codeql-config.yml@main
+    
     - name: Check local build action existence
       id: custom_build_action
       uses: andstor/file-existence-action@v2
       with:
         files: "./.github/actions/custom_build/action.yml"
+        
+    - name: Build custom
+      if: steps.custom_build_action.outputs.files_exists == 'true'
+      uses: ./.github/actions/custom_build
+      with:
+        languages: ${{ matrix.language }}
 
     - name: Build default
       if: steps.custom_build_action.outputs.files_exists == 'false'
