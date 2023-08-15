@@ -13,8 +13,6 @@ on:
         default: '[]'
         required: false
         type: string  
-  
-
 
 jobs:
   detect-lang:
@@ -110,3 +108,10 @@ jobs:
     # perform the analysis
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
+      id: analyze
+
+    - uses: mainmatter/continue-on-error-comment@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        outcome: ${{ steps.analyze.outcome }}
+        test-id: Codeql custom build failed  
