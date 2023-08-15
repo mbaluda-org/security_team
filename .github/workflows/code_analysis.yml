@@ -114,4 +114,4 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         outcome: ${{ steps.analyze.outcome }}
-        test-id: Codeql custom build failed  
+        test-id: Codeql analysis failed  
