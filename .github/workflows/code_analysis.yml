@@ -92,8 +92,8 @@ jobs:
       uses: github/codeql-action/analyze@v2
       id: analyze
 
-    - uses: mainmatter/continue-on-error-comment@v1
+    - name: Comment PR
+      if: steps.analyze.outcome == 'failure'
+      uses: mshick/add-pr-comment@v2
       with:
-        repo-token: ${{ secrets.GITHUB_TOKEN }}
-        outcome: ${{ steps.analyze.outcome }}
-        test-id: ❌ CodeQL workflow ERROR
+        message: ❌ CodeQL workflow ERROR
