@@ -47,20 +47,20 @@ jobs:
       with:
         fetch-depth: 0
         
-    - name: Check CodeQL config existence
+    - name: Check local CodeQL config existence
       id: custom_codeql_config
       uses: andstor/file-existence-action@v2
       with:
         files: "./.github/codeql/codeql-config.yml"
         
-    - name: Initialize CodeQL custom
+    - name: Initialize CodeQL custom config
       if: steps.custom_codeql_config.outputs.files_exists == 'true'
       uses: github/codeql-action/init@v2
       with:
         languages: ${{ matrix.language }}
         config-file: ./.github/codeql/codeql-config.yml
         
-    - name: Initialize CodeQL default
+    - name: Initialize CodeQL default config
       if: steps.custom_codeql_config.outputs.files_exists == 'false'
       uses: github/codeql-action/init@v2
       with:
@@ -72,13 +72,14 @@ jobs:
       uses: andstor/file-existence-action@v2
       with:
         files: "./.github/actions/custom_build/action.yml"
-        
+    
     - name: Build custom
       if: steps.custom_build_action.outputs.files_exists == 'true'
       uses: ./.github/actions/custom_build
+      id: custombuild
       with:
         languages: ${{ matrix.language }}
-
+        
     - name: Build default
       if: steps.custom_build_action.outputs.files_exists == 'false'
       uses: github/codeql-action/autobuild@v2
@@ -90,13 +91,6 @@ jobs:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         outcome: ${{ steps.autobuild.outcome }}
         test-id: Codeql autobuild failed
-
-    - name: Build custom
-      if: steps.custom_build_action.outputs.files_exists == 'true'
-      uses: ./.github/actions/custom_build
-      id: custombuild
-      with:
-        languages: ${{ matrix.language }}
 
     - uses: mainmatter/continue-on-error-comment@v1
       if: steps.custom_build_action.outputs.files_exists == 'true'
