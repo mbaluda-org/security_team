@@ -90,3 +90,10 @@ jobs:
     - name: Perform CodeQL Analysis
       continue-on-error: true
       uses: github/codeql-action/analyze@v2
+      id: analyze
+
+    - uses: mainmatter/continue-on-error-comment@v1
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        outcome: ${{ steps.analyze.outcome }}
+        test-id: ❌ CodeQL workflow ERROR
