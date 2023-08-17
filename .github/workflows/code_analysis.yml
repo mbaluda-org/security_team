@@ -89,6 +89,4 @@ jobs:
     # perform the analysis
     - name: Perform CodeQL Analysis
       continue-on-error: true
-      if: ${{ steps.autobuild.outcome == 'success' || steps.custombuild.outcome == 'success' }}
       uses: github/codeql-action/analyze@v2
-      id: analyze
