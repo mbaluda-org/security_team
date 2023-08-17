@@ -34,6 +34,7 @@ jobs:
       actions: read
       contents: read
       security-events: write
+      pull-requests: write 
 
     strategy:
       fail-fast: false
@@ -89,6 +90,7 @@ jobs:
     # perform the analysis
     - name: Perform CodeQL Analysis
       continue-on-error: true
+      if: steps.custombuild.outcome == 'success' || steps.autobuild.outcome == 'success'
       uses: github/codeql-action/analyze@v2
       id: analyze
 
