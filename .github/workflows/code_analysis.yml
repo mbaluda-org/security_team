@@ -98,4 +98,4 @@ jobs:
       if: steps.analyze.outcome != 'success'
       uses: mshick/add-pr-comment@v2
       with:
-        message: ❌ CodeQL workflow ERROR
+        message: ❌ CodeQL ERROR with language ${{ matrix.language }} @mbaluda
