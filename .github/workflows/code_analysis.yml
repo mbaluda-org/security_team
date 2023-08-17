@@ -111,7 +111,7 @@ jobs:
       id: analyze
 
     - uses: mainmatter/continue-on-error-comment@v1
-      if: steps.autobuild.outcome == 'success' || steps.custombuild.outcome == 'success'
+      if: ${{ steps.autobuild.outcome == 'success' || steps.custombuild.outcome == 'success' }}
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         outcome: ${{ steps.analyze.outcome }}
