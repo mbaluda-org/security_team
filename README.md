@@ -22,9 +22,7 @@ Examples:
 ## Repo-specific Custom Configuration:
 - Customize the repo-specific build creating a local action named `custom_build` (e.g. [mbaluda-org/WebGoat_custom_build](https://github.com/mbaluda-org/WebGoat_custom_build/blob/main/.github/actions/custom_build/action.yml))
 - Customize the repo-specific CodeQL config in `.github/codeql/codeql-config.yml` (e.g. [mbaluda-org/WebGoat_custom_build](https://github.com/mbaluda-org/WebGoat_custom_build/blob/main/.github/codeql/codeql-config.yml))
-- The reusable workflow can be diversified in feature branches (e.g. [project Lombok support](https://github.com/mbaluda-org/security_team/blob/lombok/.github/workflows/code_analysis.yml#L79), [continue-on-error](https://github.com/mbaluda-org/security_team/blob/continue-on-error/.github/workflows/code_analysis.yml#L76-L101))
-  - [OWASP WebGoat without Lombok support](https://github.com/mbaluda-org/WebGoat/security/code-scanning)
-  - [OWASP WebGoat with Lombok support](https://github.com/mbaluda-org/WebGoat_delombok/security/code-scanning)
+- The reusable workflow can be diversified in feature branches (e.g. [[continue-on-error](https://github.com/mbaluda-org/security_team/blob/continue-on-error/.github/workflows/code_analysis.yml#L76-L101))
   - [OWASP WebGoat with continue on error in PR]( https://github.com/mbaluda-org/WebGoat_custom_build_continue-on-error/pull/23)
 - Add the workflow and the configuration files to `CODEOWNERS` (e.g. [mbaluda-org/WebGoat_custom_build](https://github.com/mbaluda-org/WebGoat_custom_build/blob/main/.github/CODEOWNERS))
 
